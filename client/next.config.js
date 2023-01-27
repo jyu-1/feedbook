@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-}
+    reactStrictMode: true,
+    basePath: "/feedbook",
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

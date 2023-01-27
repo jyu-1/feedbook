@@ -20,8 +20,8 @@ export default function Home() {
                     {signUp ? (
                         <div className={login.login_panel}>
                             <h2>Signup</h2>
-                            <p>It is fast and easy</p>
-                            <form>
+                            <p>It is fast and easy!</p>
+                            <form action="" method="post">
                                 <input
                                     name="name"
                                     type="text"
@@ -60,7 +60,7 @@ export default function Home() {
                         </div>
                     ) : (
                         <div className={login.login_panel}>
-                            <form>
+                            <form action="" method="post">
                                 <input
                                     name="email"
                                     type="email"
