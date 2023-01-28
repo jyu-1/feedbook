@@ -1,3 +1,13 @@
+@use "color";
+
 .home {
-    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main_container {
+    flex: 1;
+    display: flex;
+    overflow-y: hidden;
 }

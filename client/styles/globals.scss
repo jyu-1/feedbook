@@ -12,3 +12,16 @@ body {
         sans-serif;
     background-color: color.$primary-background;
 }
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(175, 175, 175);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(150, 150, 150);
+}

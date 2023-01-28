@@ -1,0 +1,19 @@
+@use "color";
+
+.post_container {
+    padding: 25px;
+    min-width: 250px;
+    flex: 1;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+        width: 10px;
+    }
+
+    &:hover {
+        &::-webkit-scrollbar {
+            display: block;
+        }
+    }
+}

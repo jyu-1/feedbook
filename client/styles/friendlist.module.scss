@@ -1,0 +1,18 @@
+@use "color";
+
+.friend_list {
+    padding: 25px;
+    min-width: 250px;
+    max-width: 400px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &:hover {
+        &::-webkit-scrollbar {
+            display: block;
+        }
+    }
+}

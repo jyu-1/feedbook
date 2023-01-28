@@ -1,0 +1,20 @@
+@use "color";
+
+.nav {
+    padding: 25px;
+    min-width: 250px;
+    max-width: 400px;
+    overflow-y: auto;
+    background-color: color.$secondary-background;
+    box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.5);
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &:hover {
+        &::-webkit-scrollbar {
+            display: block;
+        }
+    }
+}

@@ -1,5 +1,9 @@
 import Head from "next/head";
 import Layout from "@/components/HomeLayout";
+import SideNav from "@/components/SideNav";
+import PostContainer from "@/components/PostContainer";
+import FriendList from "@/components/FriendList";
+import style from "@/styles/homeLayout.module.scss";
 
 export default function Home() {
     return (
@@ -7,7 +11,11 @@ export default function Home() {
             <Head>
                 <title>Home Page</title>
             </Head>
-            <div>Home page</div>
+            <div className={style.main_container}>
+                <SideNav />
+                <PostContainer />
+                <FriendList />
+            </div>
         </Layout>
     );
 }
