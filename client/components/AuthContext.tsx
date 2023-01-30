@@ -1,4 +1,10 @@
-import React, { createContext, useReducer, useContext, useState } from "react";
+import React, {
+    createContext,
+    useReducer,
+    useContext,
+    useState,
+    useEffect,
+} from "react";
 
 type StateType = {
     user: object | null;
@@ -18,7 +24,7 @@ export const authReducer = (state: StateType, action: ActionType) => {
         case "LOGIN":
             return { user: action.payload };
         case "LOGOUT": {
-            return { user: null };
+            return { user: {} };
         }
         default:
             return state;
@@ -31,6 +37,13 @@ export default function AuthProvider({
     children: React.ReactNode;
 }) {
     const [state, dispatch] = useReducer(authReducer, { user: null });
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        if (user) {
+            dispatch({ type: "LOGIN", payload: user });
+        }
+    }, []);
 
     console.log("AuthContext state: ", state);
 
