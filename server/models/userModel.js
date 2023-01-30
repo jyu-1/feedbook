@@ -12,10 +12,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    name: {
+        type: String,
+        required: true,
+    },
 });
 
-userSchema.statics.signup = async function (email, password) {
-    if (!email || !password) {
+userSchema.statics.signup = async function (email, password, name) {
+    if (!email || !password || !name) {
         throw Error("All fields must be filled");
     }
     if (!validator.isEmail(email)) {
@@ -32,7 +36,7 @@ userSchema.statics.signup = async function (email, password) {
 
     const hash = await bcrypt.hash(password, 10);
 
-    const user = await this.create({ email, password: hash });
+    const user = await this.create({ email, password: hash, name });
 
     return user;
 };
