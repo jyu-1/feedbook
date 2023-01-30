@@ -65,7 +65,7 @@ export const useAuthContext = () => {
 };
 
 export const useSignUp = () => {
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const { dispatch } = useAuthContext();
 
@@ -73,25 +73,31 @@ export const useSignUp = () => {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/signup`,
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password, name }),
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/signup`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password, name }),
+                }
+            );
+
+            const json = await response.json();
+
+            if (!response.ok) {
+                setIsLoading(false);
+                setError(json.error);
             }
-        );
 
-        const json = await response.json();
-
-        if (!response.ok) {
-            setIsLoading(false);
-            setError(json.error);
-        }
-
-        if (response.ok) {
-            localStorage.setItem("user", JSON.stringify(json));
-            dispatch({ type: "LOGIN", payload: json });
+            if (response.ok) {
+                localStorage.setItem("user", JSON.stringify(json));
+                dispatch({ type: "LOGIN", payload: json });
+                setIsLoading(false);
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) console.log(err.message);
+            setError("Server is starting. Please wait about 20 seconds.");
             setIsLoading(false);
         }
     };
@@ -111,7 +117,7 @@ export const useLogout = () => {
 };
 
 export const useLogin = () => {
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const { dispatch } = useAuthContext();
 
@@ -119,25 +125,31 @@ export const useLogin = () => {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/login`,
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/login`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password }),
+                }
+            );
+
+            const json = await response.json();
+
+            if (!response.ok) {
+                setIsLoading(false);
+                setError(json.error);
             }
-        );
 
-        const json = await response.json();
-
-        if (!response.ok) {
-            setIsLoading(false);
-            setError(json.error);
-        }
-
-        if (response.ok) {
-            localStorage.setItem("user", JSON.stringify(json));
-            dispatch({ type: "LOGIN", payload: json });
+            if (response.ok) {
+                localStorage.setItem("user", JSON.stringify(json));
+                dispatch({ type: "LOGIN", payload: json });
+                setIsLoading(false);
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) console.log(err.message);
+            setError("Server is starting. Please wait about 20 seconds.");
             setIsLoading(false);
         }
     };
