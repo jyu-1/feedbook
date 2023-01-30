@@ -1,0 +1,23 @@
+@hostname = http://localhost:9000
+
+get {{hostname}}/api/user/login
+
+###
+
+post {{hostname}}/api/user/login
+Content-Type: application/json
+
+{
+    "email": "you@gmail.com",
+    "password": "Abcabc123!"
+}
+
+###
+
+post {{hostname}}/api/user/signup
+Content-Type: application/json
+
+{
+    "email": "you@gmail.com",
+    "password": "Abcabc123!"
+}
