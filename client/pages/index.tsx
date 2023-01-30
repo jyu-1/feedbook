@@ -2,9 +2,37 @@ import Head from "next/head";
 import login from "@/styles/login.module.scss";
 import Footer from "@/components/Footer";
 import { useState } from "react";
+import { useSignUp } from "@/components/AuthContext";
+
+interface SignUpForm {
+    name: { value: string };
+    email: { value: string };
+    password: { value: string };
+}
+
+interface SignInForm {
+    email: { value: string };
+    password: { value: string };
+}
 
 export default function Home() {
     const [signUp, setSignUp] = useState(false);
+    const { signup, error, isLoading } = useSignUp();
+
+    const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const { email, password, name } = e.target as typeof e.target &
+            SignUpForm;
+
+        await signup(email.value, password.value, name.value);
+    };
+
+    const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const { email, password } = e.target as typeof e.target & SignInForm;
+
+        console.log(email.value, password.value);
+    };
 
     return (
         <>
@@ -21,7 +49,7 @@ export default function Home() {
                         <div className={login.login_panel}>
                             <h2>Signup</h2>
                             <p>It is fast and easy!</p>
-                            <form action="" method="post">
+                            <form onSubmit={handleSignUp}>
                                 <input
                                     name="name"
                                     type="text"
@@ -43,9 +71,11 @@ export default function Home() {
                                     minLength={6}
                                     required
                                 />
+                                {error && <div>{error}</div>}
                                 <button
                                     type="submit"
                                     className={login.new_account_button}
+                                    disabled={isLoading}
                                 >
                                     Sign Up
                                 </button>
@@ -54,13 +84,14 @@ export default function Home() {
                             <button
                                 className={login.guest_button}
                                 onClick={() => setSignUp(false)}
+                                disabled={isLoading}
                             >
                                 Back to Login
                             </button>
                         </div>
                     ) : (
                         <div className={login.login_panel}>
-                            <form action="" method="post">
+                            <form onSubmit={handleSignIn}>
                                 <input
                                     name="email"
                                     type="email"
