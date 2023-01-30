@@ -8,7 +8,7 @@ post {{hostname}}/api/user/login
 Content-Type: application/json
 
 {
-    "email": "you@gmail.com",
+    "email": "youu@gmail.com",
     "password": "Abcabc123!"
 }
 
