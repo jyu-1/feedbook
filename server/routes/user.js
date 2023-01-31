@@ -3,6 +3,7 @@ const {
     getUserList,
     loginUser,
     signupUser,
+    getUser,
 } = require("../controllers/userController");
 const checkAuth = require("../middlewares/checkAuth");
 
@@ -10,6 +11,7 @@ const router = express.Router();
 
 // user list
 router.get("/list", checkAuth, getUserList);
+router.get("/list/:id", checkAuth, getUser);
 
 // login route
 router.post("/login", loginUser);

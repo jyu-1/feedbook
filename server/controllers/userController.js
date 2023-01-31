@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.SECRET, { expiresIn: "1d" });
@@ -8,9 +9,28 @@ const createToken = (id) => {
 // get user list
 const getUserList = async (req, res) => {
     try {
-        const user = await User.find({}, "_id name")
+        const user = await User.find({}, "_id name profilePicture")
             .sort({ name: 1 })
             .limit(100);
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+// get one user
+const getUser = async (req, res) => {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id))
+            return res.status(404).json({ error: "Invalid ID" });
+
+        const user = await User.findById(
+            req.params.id,
+            "_id name profilePicture"
+        );
+
+        if (!user) return res.status(404).json({ error: "Invalid ID" });
 
         res.status(200).json(user);
     } catch (error) {
@@ -26,7 +46,7 @@ const loginUser = async (req, res) => {
         const user = await User.login(email, password);
         const token = createToken(user._id);
 
-        res.status(200).json({ email, token });
+        res.status(200).json({ _id: user._id, token });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -40,10 +60,10 @@ const signupUser = async (req, res) => {
         const user = await User.signup(email, password, name);
         const token = createToken(user._id);
 
-        res.status(200).json({ email, token });
+        res.status(200).json({ _id: user._id, token });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
 
-module.exports = { getUserList, loginUser, signupUser };
+module.exports = { getUserList, getUser, loginUser, signupUser };

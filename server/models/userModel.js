@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    profilePicture: {
+        type: String,
+        required: true,
+    },
 });
 
 userSchema.statics.signup = async function (email, password, name) {
@@ -36,7 +40,12 @@ userSchema.statics.signup = async function (email, password, name) {
 
     const hash = await bcrypt.hash(password, 10);
 
-    const user = await this.create({ email, password: hash, name });
+    const user = await this.create({
+        email,
+        password: hash,
+        name,
+        profilePicture: "https://cdn-icons-png.flaticon.com/512/428/428933.png",
+    });
 
     return user;
 };

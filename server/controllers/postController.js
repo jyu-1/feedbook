@@ -4,7 +4,16 @@ const mongoose = require("mongoose");
 // get post
 const getAllPost = async (req, res) => {
     try {
-        const post = await Post.find({}).sort({ createdAt: -1 }).limit(10);
+        const post = await Post.find(
+            {},
+            "_id message updatedAt likeCount commentCount"
+        )
+            .sort({ updatedAt: -1 })
+            .limit(10)
+            .populate({
+                path: "createdBy",
+                select: "_id name profilePicture",
+            });
 
         res.status(200).json(post);
     } catch (error) {
@@ -30,17 +39,22 @@ const getPost = async (req, res) => {
 
 // create post
 const createPost = async (req, res) => {
-    const { name, message } = req.body;
+    const { message, createdBy } = req.body;
 
     try {
         const post = await Post.create({
-            name,
             message,
-            image: "image",
             likeCount: 0,
             commentCount: 0,
+            createdBy,
         });
-        res.status(200).json(post);
+        res.status(200).json({
+            _id: post._id,
+            message: post.message,
+            updatedAt: post.updatedAt,
+            likeCount: post.likeCount,
+            postCount: post.postCount,
+        });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }

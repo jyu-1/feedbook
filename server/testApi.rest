@@ -1,6 +1,6 @@
 @hostname = http://localhost:9000
 
-get {{hostname}}/api/user/list
+get {{hostname}}/api/user/list/63d8e7e4fc03e54368a4cf50
 
 ###
 
@@ -31,7 +31,7 @@ post {{hostname}}/api/user/login
 Content-Type: application/json
 
 {
-    "email": "youu@gmail.com",
+    "email": "youl@gmail.com",
     "password": "Abcabc123!"
 }
 
@@ -42,6 +42,6 @@ Content-Type: application/json
 
 {
     "name": "Apple",
-    "email": "youu@gmail.com",
+    "email": "yin@gmail.com",
     "password": "Abcabc123!"
 }
