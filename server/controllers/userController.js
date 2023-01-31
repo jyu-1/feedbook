@@ -2,8 +2,8 @@ const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
-const createToken = (id) => {
-    return jwt.sign({ id }, process.env.SECRET, { expiresIn: "1d" });
+const createToken = (_id) => {
+    return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "1d" });
 };
 
 // get user list

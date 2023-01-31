@@ -66,9 +66,12 @@ const deletePost = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(req.params.id))
             return res.status(404).json({ error: "Invalid ID" });
 
-        const post = await Post.findOneAndDelete({ _id: req.params.id });
+        const post = await Post.findOneAndDelete({
+            _id: req.params.id,
+            createdBy: req.user._id,
+        });
 
-        if (!post) return res.status(404).json({ error: "Invalid ID" });
+        if (!post) return res.status(404).json({ error: "Invalid Operation" });
 
         res.status(200).json(post);
     } catch (error) {
@@ -83,11 +86,11 @@ const updatePost = async (req, res) => {
             return res.status(404).json({ error: "Invalid ID" });
 
         const post = await Post.findOneAndUpdate(
-            { _id: req.params.id },
+            { _id: req.params.id, createdBy: req.user._id },
             { message: req.body.message }
         );
 
-        if (!post) return res.status(404).json({ error: "Invalid ID" });
+        if (!post) return res.status(404).json({ error: "Invalid Operation" });
 
         res.status(200).json(post);
     } catch (error) {
