@@ -10,18 +10,18 @@ import { useRouter } from "next/router";
 export default function Home() {
     const [signUp, setSignUp] = useState(false);
     const [renderPage, setRenderPage] = useState(false);
-    const { user } = useAuthContext();
+    const { user, loadPage } = useAuthContext();
     const router = useRouter();
 
     useEffect(() => {
-        if (user) {
-            if (Object.keys(user).length === 0) {
+        if (loadPage) {
+            if (!user) {
                 setRenderPage(true);
             } else {
                 router.push("/home");
             }
         }
-    }, [user, router]);
+    }, [user, router, loadPage]);
 
     return (
         <>

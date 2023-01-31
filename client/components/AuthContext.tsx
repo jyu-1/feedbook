@@ -17,6 +17,7 @@ type ActionType =
 interface ContextInterface {
     user: { email: string; token: string } | null;
     dispatch: React.Dispatch<ActionType>;
+    loadPage: boolean;
 }
 
 export const AuthContext = createContext<ContextInterface | null>(null);
@@ -29,7 +30,7 @@ export const authReducer = (
         case "LOGIN":
             return { user: action.payload };
         case "LOGOUT": {
-            return { user: {} as any };
+            return { user: null };
         }
         default:
             return state;
@@ -42,18 +43,23 @@ export default function AuthProvider({
     children: React.ReactNode;
 }) {
     const [state, dispatch] = useReducer(authReducer, { user: null });
+    const [loadPage, setLoadPage] = useState(false);
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        if (user) {
-            dispatch({ type: "LOGIN", payload: user });
-        }
+        const checkLocal = async () => {
+            const checkUser = localStorage.getItem("user");
+            if (checkUser) {
+                const user = await JSON.parse(checkUser);
+                dispatch({ type: "LOGIN", payload: user });
+            }
+            setLoadPage(true);
+        };
+
+        checkLocal();
     }, []);
 
-    console.log("AuthContext state: ", state);
-
     return (
-        <AuthContext.Provider value={{ ...state, dispatch }}>
+        <AuthContext.Provider value={{ ...state, dispatch, loadPage }}>
             {children}
         </AuthContext.Provider>
     );

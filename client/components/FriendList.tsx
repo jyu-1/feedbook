@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import style from "@/styles/friendlist.module.scss";
+import { useAuthContext } from "./AuthContext";
 
 interface UserType {
     _id: string;
@@ -8,12 +9,18 @@ interface UserType {
 
 export default function FriendList() {
     const [users, setUsers] = useState<UserType[]>([]);
+    const { user } = useAuthContext();
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/list`
+                    `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/list`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${user?.token}`,
+                        },
+                    }
                 );
                 const json = await response.json();
 
@@ -27,9 +34,8 @@ export default function FriendList() {
                 );
             }
         };
-
-        fetchUser();
-    }, []);
+        if (user) fetchUser();
+    }, [user]);
 
     return (
         <div className={style.friend_list}>

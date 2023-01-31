@@ -29,14 +29,23 @@ export default function PostItem({ post, setPost }: PostItemProps) {
     const { user } = useAuthContext();
     const updateRef = useRef<HTMLInputElement>(null);
     const [showEdit, setShowEdit] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
 
     const handleUpdate = async () => {
+        if (!user) {
+            console.log("You are not logged in");
+            return;
+        }
+
         try {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/post/${post._id}`,
                 {
                     method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${user?.token}`,
+                    },
                     body: JSON.stringify({
                         name: user ? user.email : "null",
                         message: updateRef.current
@@ -77,10 +86,20 @@ export default function PostItem({ post, setPost }: PostItemProps) {
     };
 
     const handleDelete = async () => {
+        if (!user) {
+            console.log("You are not logged in");
+            return;
+        }
+
         try {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/post/${post._id}`,
-                { method: "DELETE" }
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${user?.token}`,
+                    },
+                }
             );
 
             const json = await response.json();
@@ -152,7 +171,13 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                         Update Post
                     </button>
                 )}
-                <button onClick={handleDelete}>Delete Post</button>
+                {showDelete ? (
+                    <button onClick={handleDelete}>Confirm Delete</button>
+                ) : (
+                    <button onClick={() => setShowDelete(true)}>
+                        Delete Post
+                    </button>
+                )}
             </div>
             <hr />
             {post.comments &&

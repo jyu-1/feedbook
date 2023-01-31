@@ -27,13 +27,21 @@ export default function PostContainer() {
 
     const createPostHandler = async (e: FormEvent) => {
         e.preventDefault();
+
+        if (!user) {
+            console.log("You are not logged in");
+            return;
+        }
         setIsLoading(true);
         try {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/post`,
                 {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${user?.token}`,
+                    },
                     body: JSON.stringify({
                         name: user ? user.email : "null",
                         message: (e.target as HTMLFormElement).message.value,
@@ -64,7 +72,12 @@ export default function PostContainer() {
         const fetchPost = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_SERVER_IP}/api/post`
+                    `${process.env.NEXT_PUBLIC_SERVER_IP}/api/post`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${user?.token}`,
+                        },
+                    }
                 );
                 const json = await response.json();
 
@@ -79,8 +92,8 @@ export default function PostContainer() {
             }
         };
 
-        fetchPost();
-    }, []);
+        if (user) fetchPost();
+    }, [user]);
 
     return (
         <div className={style.post_container}>
