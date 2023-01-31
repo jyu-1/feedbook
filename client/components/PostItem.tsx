@@ -161,7 +161,6 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                     <hr />
                 </>
             )}
-
             <div className={style.stats}>
                 <div>Likes: {post.likeCount}</div>
                 <div>{post.commentCount} comments</div>
@@ -170,21 +169,27 @@ export default function PostItem({ post, setPost }: PostItemProps) {
             <div className={style.like_comment_buttons}>
                 <button>Like</button>
                 <button>Comment</button>
-                {showEdit ? (
-                    <button onClick={() => setShowEdit(false)}>
-                        Cancel Update
-                    </button>
-                ) : (
-                    <button onClick={() => setShowEdit(true)}>
-                        Update Post
-                    </button>
-                )}
-                {showDelete ? (
-                    <button onClick={handleDelete}>Confirm Delete</button>
-                ) : (
-                    <button onClick={() => setShowDelete(true)}>
-                        Delete Post
-                    </button>
+                {myInfo._id === post.createdBy._id && (
+                    <>
+                        {showEdit ? (
+                            <button onClick={() => setShowEdit(false)}>
+                                Cancel Update
+                            </button>
+                        ) : (
+                            <button onClick={() => setShowEdit(true)}>
+                                Update Post
+                            </button>
+                        )}
+                        {showDelete ? (
+                            <button onClick={handleDelete}>
+                                Confirm Delete
+                            </button>
+                        ) : (
+                            <button onClick={() => setShowDelete(true)}>
+                                Delete Post
+                            </button>
+                        )}
+                    </>
                 )}
             </div>
             <hr />
