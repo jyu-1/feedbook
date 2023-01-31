@@ -7,24 +7,29 @@ import React, {
 } from "react";
 
 type StateType = {
-    user: object | null;
+    user: { email: string; token: string } | null;
 };
 
-type ActionType = { type: "LOGIN"; payload: object } | { type: "LOGOUT" };
+type ActionType =
+    | { type: "LOGIN"; payload: { email: string; token: string } }
+    | { type: "LOGOUT" };
 
 interface ContextInterface {
-    user: object | null;
+    user: { email: string; token: string } | null;
     dispatch: React.Dispatch<ActionType>;
 }
 
 export const AuthContext = createContext<ContextInterface | null>(null);
 
-export const authReducer = (state: StateType, action: ActionType) => {
+export const authReducer = (
+    state: StateType,
+    action: ActionType
+): StateType => {
     switch (action.type) {
         case "LOGIN":
             return { user: action.payload };
         case "LOGOUT": {
-            return { user: {} };
+            return { user: {} as any };
         }
         default:
             return state;

@@ -11,13 +11,20 @@ export default function FriendList() {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/list`
-            );
-            const json = await response.json();
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/list`
+                );
+                const json = await response.json();
 
-            if (response.ok) {
-                setUsers(json);
+                if (response.ok) {
+                    setUsers(json);
+                }
+            } catch (err: unknown) {
+                if (err instanceof Error) console.log(err.message);
+                console.log(
+                    "Server is starting. Please wait about 20 seconds."
+                );
             }
         };
 
