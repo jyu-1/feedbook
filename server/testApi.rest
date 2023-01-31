@@ -1,6 +1,29 @@
 @hostname = http://localhost:9000
 
-get {{hostname}}/api/user/login
+get {{hostname}}/api/post/
+
+###
+
+post {{hostname}}/api/post
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "message": "Welcome back haha"
+}
+
+###
+
+delete {{hostname}}/api/post/id
+
+###
+
+patch {{hostname}}/api/post/id
+Content-Type: application/json
+
+{
+    "message": "Good morning"
+}
 
 ###
 
@@ -18,6 +41,7 @@ post {{hostname}}/api/user/signup
 Content-Type: application/json
 
 {
+    "name": "Apple",
     "email": "youu@gmail.com",
     "password": "Abcabc123!"
 }
