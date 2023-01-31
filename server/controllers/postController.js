@@ -53,7 +53,7 @@ const createPost = async (req, res) => {
             message: post.message,
             updatedAt: post.updatedAt,
             likeCount: post.likeCount,
-            postCount: post.postCount,
+            commentCount: post.commentCount,
         });
     } catch (error) {
         res.status(400).json({ error: error.message });
