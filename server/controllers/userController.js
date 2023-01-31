@@ -5,7 +5,20 @@ const createToken = (id) => {
     return jwt.sign({ id }, process.env.SECRET, { expiresIn: "1d" });
 };
 
-//login user
+// get user list
+const getUserList = async (req, res) => {
+    try {
+        const user = await User.find({}, "_id name")
+            .sort({ createdAt: -1 })
+            .limit(100);
+
+        res.status(200).json({ user });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+// login user
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
@@ -19,7 +32,7 @@ const loginUser = async (req, res) => {
     }
 };
 
-//signup user
+// signup user
 const signupUser = async (req, res) => {
     const { email, password, name } = req.body;
 
@@ -33,4 +46,4 @@ const signupUser = async (req, res) => {
     }
 };
 
-module.exports = { loginUser, signupUser };
+module.exports = { getUserList, loginUser, signupUser };

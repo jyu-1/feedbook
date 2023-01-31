@@ -1,6 +1,6 @@
 @hostname = http://localhost:9000
 
-get {{hostname}}/api/post/
+get {{hostname}}/api/user/list
 
 ###
 
