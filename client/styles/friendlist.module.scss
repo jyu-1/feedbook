@@ -20,9 +20,18 @@
         padding: 20px;
         border-radius: 10px;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
 
         &:hover {
             background-color: rgb(225, 225, 225);
+        }
+
+        img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
         }
     }
 }

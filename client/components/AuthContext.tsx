@@ -7,15 +7,15 @@ import React, {
 } from "react";
 
 type StateType = {
-    user: { email: string; token: string } | null;
+    user: { id: string; token: string; name: string } | null;
 };
 
 type ActionType =
-    | { type: "LOGIN"; payload: { email: string; token: string } }
+    | { type: "LOGIN"; payload: { id: string; token: string; name: string } }
     | { type: "LOGOUT" };
 
 interface ContextInterface {
-    user: { email: string; token: string } | null;
+    user: { id: string; token: string; name: string } | null;
     dispatch: React.Dispatch<ActionType>;
     loadPage: boolean;
 }
@@ -69,7 +69,7 @@ export const useAuthContext = () => {
     const context = useContext(AuthContext);
 
     if (!context) {
-        throw Error("useAthContext must be used inside the Auth Provider");
+        throw Error("useAuthContext must be used inside the Auth Provider");
     }
 
     return context;

@@ -2,6 +2,7 @@ import style from "@/styles/postcontainer.module.scss";
 import { formatDistanceToNow } from "date-fns";
 import { useRef, useState } from "react";
 import { useAuthContext } from "./AuthContext";
+import { useUserContext } from "./UserContext";
 
 interface ItemType {
     _id: string;
@@ -30,6 +31,7 @@ export default function PostItem({ post, setPost }: PostItemProps) {
     const updateRef = useRef<HTMLInputElement>(null);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
+    const { myInfo } = useUserContext();
 
     const handleUpdate = async () => {
         if (!user) {
@@ -47,7 +49,6 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                         Authorization: `Bearer ${user?.token}`,
                     },
                     body: JSON.stringify({
-                        name: user ? user.email : "null",
                         message: updateRef.current
                             ? updateRef.current.value
                             : post.message,
@@ -198,7 +199,11 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                     </div>
                 ))}
             <div className={style.post_comment}>
-                <div>{user?.email}</div>
+                <img
+                    className={style.pfp}
+                    src={myInfo.profilePicture}
+                    alt="pfp"
+                />
                 <input placeholder="Write a comment..." />
             </div>
         </div>

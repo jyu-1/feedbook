@@ -1,6 +1,7 @@
 import style from "@/styles/postcontainer.module.scss";
 import { FormEvent, useEffect, useState } from "react";
 import { useAuthContext } from "./AuthContext";
+import { useUserContext } from "./UserContext";
 import PostItem from "./PostItem";
 
 interface PostType {
@@ -24,6 +25,7 @@ export default function PostContainer() {
     const [posts, setPost] = useState<PostType[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const { user } = useAuthContext();
+    const { myInfo } = useUserContext();
 
     const createPostHandler = async (e: FormEvent) => {
         e.preventDefault();
@@ -43,7 +45,7 @@ export default function PostContainer() {
                         Authorization: `Bearer ${user?.token}`,
                     },
                     body: JSON.stringify({
-                        name: user ? user.email : "null",
+                        name: user ? user.name : "null",
                         message: (e.target as HTMLFormElement).message.value,
                     }),
                 }
@@ -99,7 +101,11 @@ export default function PostContainer() {
         <div className={style.post_container}>
             <form className={style.create_post} onSubmit={createPostHandler}>
                 <div className={style.post_input}>
-                    <div>{user?.email}</div>
+                    <img
+                        className={style.pfp}
+                        src={myInfo.profilePicture}
+                        alt="pfp"
+                    />
                     <input
                         type="text"
                         name="message"

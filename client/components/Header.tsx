@@ -1,10 +1,11 @@
 import Link from "next/link";
 import style from "@/styles/header.module.scss";
-import { useAuthContext, useLogout } from "./AuthContext";
+import { useLogout } from "./AuthContext";
+import { useUserContext } from "./UserContext";
 
 export default function Header() {
     const { logout } = useLogout();
-    const { user } = useAuthContext();
+    const { myInfo } = useUserContext();
 
     const handleLogout = () => {
         logout();
@@ -16,7 +17,7 @@ export default function Header() {
                 <Link href="/home">feedbook</Link>
             </h1>
             <input placeholder="Search Feedbook" />
-            <div>{user?.email}</div>
+            <img className={style.pfp} src={myInfo.profilePicture} alt="pfp" />
             <button onClick={handleLogout}>Logout</button>
         </div>
     );

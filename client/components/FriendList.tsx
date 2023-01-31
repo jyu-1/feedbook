@@ -5,6 +5,7 @@ import { useAuthContext } from "./AuthContext";
 interface UserType {
     _id: string;
     name: string;
+    profilePicture: string;
 }
 
 export default function FriendList() {
@@ -42,7 +43,8 @@ export default function FriendList() {
             {users &&
                 users.map((user) => (
                     <div className={style.friend_item} key={user._id}>
-                        {user.name}
+                        <img src={user.profilePicture} alt="pfp" />
+                        <div>{user.name}</div>
                     </div>
                 ))}
         </div>
