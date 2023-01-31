@@ -9,7 +9,7 @@ const createToken = (id) => {
 const getUserList = async (req, res) => {
     try {
         const user = await User.find({}, "_id name")
-            .sort({ createdAt: -1 })
+            .sort({ name: 1 })
             .limit(100);
 
         res.status(200).json(user);

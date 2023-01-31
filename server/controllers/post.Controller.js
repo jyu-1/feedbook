@@ -36,6 +36,7 @@ const createPost = async (req, res) => {
         const post = await Post.create({
             name,
             message,
+            image: "image",
             likeCount: 0,
             commentCount: 0,
         });

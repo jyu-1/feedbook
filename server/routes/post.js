@@ -6,8 +6,11 @@ const {
     deletePost,
     updatePost,
 } = require("../controllers/post.Controller");
+const checkAuth = require("../middlewares/checkAuth");
 
 const router = express.Router();
+
+router.use(checkAuth);
 
 router.get("/", getAllPost);
 
