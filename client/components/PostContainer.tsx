@@ -6,19 +6,22 @@ import PostItem from "./PostItem";
 
 interface PostType {
     _id: string;
-    name: string;
     message: string;
     likeCount: number;
     commentCount: number;
-    createdAt: string;
+    updatedAt: string;
     comments?: {
         _id: number;
         name: string;
         message: string;
-        createdAt: string;
+        updatedAt: string;
     }[];
-    image: string;
     uploadImage: string;
+    createdBy: {
+        _id: string;
+        name: string;
+        profilePicture: string;
+    };
 }
 
 export default function PostContainer() {
@@ -45,8 +48,8 @@ export default function PostContainer() {
                         Authorization: `Bearer ${user?.token}`,
                     },
                     body: JSON.stringify({
-                        name: user ? user.name : "null",
                         message: (e.target as HTMLFormElement).message.value,
+                        createdBy: myInfo._id,
                     }),
                 }
             );
@@ -59,7 +62,17 @@ export default function PostContainer() {
             }
 
             if (response.ok) {
-                setPost((prev) => [json, ...prev]);
+                setPost((prev) => [
+                    {
+                        ...json,
+                        createdBy: {
+                            _id: myInfo._id,
+                            name: myInfo.name,
+                            profilePicture: myInfo.profilePicture,
+                        },
+                    },
+                    ...prev,
+                ]);
                 setIsLoading(false);
                 (e.target as HTMLFormElement).reset();
             }

@@ -6,19 +6,22 @@ import { useUserContext } from "./UserContext";
 
 interface ItemType {
     _id: string;
-    name: string;
     message: string;
     likeCount: number;
     commentCount: number;
-    createdAt: string;
+    updatedAt: string;
     comments?: {
         _id: number;
         name: string;
         message: string;
-        createdAt: string;
+        updatedAt: string;
     }[];
-    image: string;
     uploadImage: string;
+    createdBy: {
+        _id: string;
+        name: string;
+        profilePicture: string;
+    };
 }
 
 interface PostItemProps {
@@ -121,11 +124,15 @@ export default function PostItem({ post, setPost }: PostItemProps) {
     return (
         <div className={style.list_post}>
             <div className={style.info}>
-                <div>{post.uploadImage}</div>
+                <img
+                    className={style.pfp}
+                    src={post.createdBy.profilePicture}
+                    alt="pfp"
+                />
                 <div>
-                    <div className={style.name}>{post.name}</div>
+                    <div className={style.name}>{post.createdBy.name}</div>
                     <div className={style.date}>
-                        {formatDistanceToNow(new Date(post.createdAt), {
+                        {formatDistanceToNow(new Date(post.updatedAt), {
                             addSuffix: true,
                         })}
                     </div>
@@ -188,7 +195,7 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                             <span className={style.name}>{comment.name}</span>{" "}
                             <span className={style.date}>
                                 {formatDistanceToNow(
-                                    new Date(comment.createdAt),
+                                    new Date(comment.updatedAt),
                                     {
                                         addSuffix: true,
                                     }

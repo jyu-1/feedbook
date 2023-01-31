@@ -7,15 +7,15 @@ import React, {
 } from "react";
 
 type StateType = {
-    user: { id: string; token: string; name: string } | null;
+    user: { _id: string; token: string; name: string } | null;
 };
 
 type ActionType =
-    | { type: "LOGIN"; payload: { id: string; token: string; name: string } }
+    | { type: "LOGIN"; payload: { _id: string; token: string; name: string } }
     | { type: "LOGOUT" };
 
 interface ContextInterface {
-    user: { id: string; token: string; name: string } | null;
+    user: { _id: string; token: string; name: string } | null;
     dispatch: React.Dispatch<ActionType>;
     loadPage: boolean;
 }

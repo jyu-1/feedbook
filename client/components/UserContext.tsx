@@ -9,7 +9,7 @@ import { useAuthContext } from "./AuthContext";
 
 interface UserContext {
     myInfo: {
-        id: string;
+        _id: string;
         name: string;
         profilePicture: string;
     };
@@ -19,17 +19,17 @@ export const UserContext = createContext<UserContext | null>(null);
 
 export default function UserProvider({ children }: { children: ReactNode }) {
     const [myInfo, setMyInfo] = useState<{
-        id: string;
+        _id: string;
         name: string;
         profilePicture: string;
-    }>({ id: "", name: "", profilePicture: "" });
+    }>({ _id: "", name: "", profilePicture: "" });
     const { user } = useAuthContext();
 
     useEffect(() => {
         const fetchMe = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/list/${user?.id}`,
+                    `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/list/${user?._id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${user?.token}`,
