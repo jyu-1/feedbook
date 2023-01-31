@@ -12,7 +12,7 @@ const getUserList = async (req, res) => {
             .sort({ createdAt: -1 })
             .limit(100);
 
-        res.status(200).json({ user });
+        res.status(200).json(user);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
