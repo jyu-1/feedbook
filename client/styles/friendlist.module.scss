@@ -1,7 +1,6 @@
 @use "color";
 
 .friend_list {
-    padding: 25px;
     min-width: 250px;
     max-width: 400px;
     overflow-y: auto;
@@ -13,6 +12,16 @@
     &:hover {
         &::-webkit-scrollbar {
             display: block;
+        }
+    }
+
+    .friend_item {
+        margin: 25px;
+        padding: 20px;
+        border-radius: 10px;
+
+        &:hover {
+            background-color: rgb(225, 225, 225);
         }
     }
 }
