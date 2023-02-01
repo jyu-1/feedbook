@@ -12,13 +12,17 @@ export default function Login({
 }: {
     setSignUp: React.Dispatch<SetStateAction<boolean>>;
 }) {
-    const { login, error, isLoading } = useLogin();
+    const { login, guestLogin, error, isLoading } = useLogin();
 
     const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const { email, password } = e.target as typeof e.target & SignInForm;
 
         await login(email.value, password.value);
+    };
+
+    const handleGuest = async () => {
+        await guestLogin();
     };
 
     return (
@@ -55,7 +59,11 @@ export default function Login({
             >
                 Create new Account
             </button>
-            <button className={style.guest_button} disabled={isLoading}>
+            <button
+                className={style.guest_button}
+                disabled={isLoading}
+                onClick={handleGuest}
+            >
                 Sign in as Guest
             </button>
         </div>
