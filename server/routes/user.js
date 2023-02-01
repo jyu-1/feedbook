@@ -4,6 +4,7 @@ const {
     loginUser,
     signupUser,
     getUser,
+    loginGuest,
 } = require("../controllers/userController");
 const checkAuth = require("../middlewares/checkAuth");
 
@@ -18,5 +19,8 @@ router.post("/login", loginUser);
 
 // signup route
 router.post("/signup", signupUser);
+
+// guest account
+router.post("/guest", loginGuest);
 
 module.exports = router;

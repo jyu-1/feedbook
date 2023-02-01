@@ -63,4 +63,15 @@ const signupUser = async (req, res) => {
     }
 };
 
-module.exports = { getUserList, getUser, loginUser, signupUser };
+// guest account
+const loginGuest = async (req, res) => {
+    try {
+        const token = createToken("63d9e7ea2e12aa03e1dba5b9");
+
+        res.status(200).json({ _id: "63d9e7ea2e12aa03e1dba5b9", token });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+module.exports = { getUserList, getUser, loginUser, signupUser, loginGuest };
