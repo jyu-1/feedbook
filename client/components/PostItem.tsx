@@ -328,7 +328,12 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                 {post.userLiked === 0 ? (
                     <button onClick={handleLike}>Like</button>
                 ) : (
-                    <button onClick={handleUnlike}>Unlike</button>
+                    <button
+                        className={style.liked_button}
+                        onClick={handleUnlike}
+                    >
+                        Unlike
+                    </button>
                 )}
                 {showComment ? (
                     <button onClick={() => setShowComment((prev) => !prev)}>

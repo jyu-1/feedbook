@@ -132,11 +132,19 @@
             }
         }
 
+        .liked_button {
+            background-color: rgb(114, 156, 248);
+
+            &:hover {
+                background-color: rgb(74, 128, 245);
+            }
+        }
+
         .delete_confirm {
             background-color: rgb(255, 150, 150);
 
             &:hover {
-                background-color: red;
+                background-color: rgb(255, 100, 100);
             }
         }
     }
