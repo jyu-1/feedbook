@@ -5,8 +5,9 @@ Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2Q4ZmZkY
 
 ###
 
-post {{hostname}}/api/post
+post {{hostname}}/api/comment
 Content-Type: application/json
+Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2Q4ZmZkYWUyZDU4ODNiZjdmYjYyYzkiLCJpYXQiOjE2NzUxNjkyNjgsImV4cCI6MTY3NTI1NTY2OH0.smBWmAUwDvGxV2D45zMOTnKHUOWge2L_ICFE6GVgDQw
 
 {
     "name": "John Doe",

@@ -25,6 +25,7 @@ postSchema.virtual("comments", {
     ref: "Comment",
     localField: "_id",
     foreignField: "postId",
+    options: { sort: { createdAt: -1 } },
 });
 
 postSchema.virtual("commentCount", {

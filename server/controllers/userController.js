@@ -9,7 +9,7 @@ const createToken = (_id) => {
 // get user list
 const getUserList = async (req, res) => {
     try {
-        const user = await User.find({}, "_id name profilePicture")
+        const user = await User.find({}, "name profilePicture")
             .sort({ name: 1 })
             .limit(100);
 
@@ -25,10 +25,7 @@ const getUser = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(req.params.id))
             return res.status(404).json({ error: "Invalid ID" });
 
-        const user = await User.findById(
-            req.params.id,
-            "_id name profilePicture"
-        );
+        const user = await User.findById(req.params.id, "name profilePicture");
 
         if (!user) return res.status(404).json({ error: "Invalid ID" });
 

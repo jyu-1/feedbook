@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 const userRoute = require("./routes/user");
 const postRoute = require("./routes/post");
+const commentRoute = require("./routes/comment");
 
 connectDb();
 app.use(cors());
@@ -19,5 +20,6 @@ app.use((req, res, next) => {
 
 app.use("/api/user", userRoute);
 app.use("/api/post", postRoute);
+app.use("/api/comment", commentRoute);
 
 app.listen(PORT, () => console.log(`Server started on port: ${PORT}`));

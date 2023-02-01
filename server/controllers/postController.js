@@ -5,12 +5,12 @@ const mongoose = require("mongoose");
 // get post
 const getAllPost = async (req, res) => {
     try {
-        const post = await Post.find({}, "_id message updatedAt")
+        const post = await Post.find({}, "message updatedAt")
             .sort({ updatedAt: -1 })
             .limit(10)
             .populate({
                 path: "createdBy",
-                select: "_id name profilePicture",
+                select: "name profilePicture",
             })
             .populate({
                 path: "comments",
