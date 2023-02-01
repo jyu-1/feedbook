@@ -95,6 +95,9 @@ const updatePost = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(req.params.id))
             return res.status(404).json({ error: "Invalid ID" });
 
+        if (!req.body.message || req.body.message === "")
+            return res.status(404).json({ error: "Please Enter a Message" });
+
         const post = await Post.findOneAndUpdate(
             { _id: req.params.id, createdBy: req.user._id },
             { message: req.body.message }
