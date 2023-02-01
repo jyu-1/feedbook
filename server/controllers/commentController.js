@@ -1,15 +1,14 @@
 const Comment = require("../models/commentModel");
-const mongoose = require("mongoose");
 
 // create comment
 const createComment = async (req, res) => {
-    const { postId, message, createdBy } = req.body;
+    const { postId, message } = req.body;
 
     try {
         const comment = await Comment.create({
             postId,
             message,
-            createdBy,
+            createdBy: req.user._id,
         });
         res.status(200).json({
             _id: comment._id,
