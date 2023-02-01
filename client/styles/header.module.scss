@@ -1,7 +1,7 @@
 @use "color";
 
 .header {
-    padding: 10px 20px;
+    padding: 10px 50px;
     background-color: color.$secondary-background;
     display: flex;
     justify-content: space-between;
@@ -29,5 +29,44 @@
     .pfp {
         height: 50px;
         width: 50px;
+    }
+
+    .dropdown {
+        position: absolute;
+        top: 70px;
+        width: 400px;
+        border: 1px solid rgb(225, 225, 225);
+        border-radius: 10px;
+        background-color: white;
+        transform: translateX(-80%);
+        padding: 10px;
+        overflow: hidden;
+
+        .nav_name {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-weight: bold;
+            font-size: 2rem;
+
+            .pfp {
+                height: 100px;
+                width: 100px;
+            }
+        }
+
+        .nav_item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 10px;
+
+            &:hover {
+                background-color: rgb(225, 225, 225);
+            }
+        }
     }
 }
