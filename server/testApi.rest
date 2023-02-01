@@ -1,6 +1,7 @@
 @hostname = http://localhost:9000
 
-get {{hostname}}/api/user/list/63d8e7e4fc03e54368a4cf50
+get {{hostname}}/api/post
+Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2Q4ZmZkYWUyZDU4ODNiZjdmYjYyYzkiLCJpYXQiOjE2NzUxNjkyNjgsImV4cCI6MTY3NTI1NTY2OH0.smBWmAUwDvGxV2D45zMOTnKHUOWge2L_ICFE6GVgDQw
 
 ###
 

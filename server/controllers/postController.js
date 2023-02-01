@@ -1,19 +1,24 @@
 const Post = require("../models/postModel");
+const Comment = require("../models/commentModel");
 const mongoose = require("mongoose");
 
 // get post
 const getAllPost = async (req, res) => {
     try {
-        const post = await Post.find(
-            {},
-            "_id message updatedAt likeCount commentCount"
-        )
+        const post = await Post.find({}, "_id message updatedAt")
             .sort({ updatedAt: -1 })
             .limit(10)
             .populate({
                 path: "createdBy",
                 select: "_id name profilePicture",
-            });
+            })
+            .populate({
+                path: "comments",
+                select: "createdBy updatedAt message -postId",
+                perDocumentLimit: 5,
+                populate: { path: "createdBy", select: "name profilePicture" },
+            })
+            .populate({ path: "commentCount" });
 
         res.status(200).json(post);
     } catch (error) {
@@ -44,16 +49,14 @@ const createPost = async (req, res) => {
     try {
         const post = await Post.create({
             message,
-            likeCount: 0,
-            commentCount: 0,
             createdBy,
         });
         res.status(200).json({
             _id: post._id,
             message: post.message,
+            likeCount: 0,
+            commentCount: 0,
             updatedAt: post.updatedAt,
-            likeCount: post.likeCount,
-            commentCount: post.commentCount,
         });
     } catch (error) {
         res.status(400).json({ error: error.message });

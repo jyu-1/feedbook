@@ -9,21 +9,29 @@ const postSchema = new mongoose.Schema(
         uploadImage: {
             type: String,
         },
-        likeCount: {
-            type: Number,
-            required: true,
-        },
-        commentCount: {
-            type: Number,
-            required: true,
-        },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
         },
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+        toJSON: { virtuals: true },
+    }
 );
+
+postSchema.virtual("comments", {
+    ref: "Comment",
+    localField: "_id",
+    foreignField: "postId",
+});
+
+postSchema.virtual("commentCount", {
+    ref: "Comment",
+    localField: "_id",
+    foreignField: "postId",
+    count: true,
+});
 
 module.exports = mongoose.model("Post", postSchema);
