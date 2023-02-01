@@ -6,7 +6,7 @@ const {
     deletePost,
     updatePost,
 } = require("../controllers/postController");
-const { addLike } = require("../controllers/likeController");
+const { addLike, deleteLike } = require("../controllers/likeController");
 const checkAuth = require("../middlewares/checkAuth");
 
 const router = express.Router();
@@ -24,5 +24,7 @@ router.delete("/:id", deletePost);
 router.patch("/:id", updatePost);
 
 router.post("/like", addLike);
+
+router.delete("/like/:id", deleteLike);
 
 module.exports = router;
