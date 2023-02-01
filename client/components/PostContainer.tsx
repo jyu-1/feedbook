@@ -7,6 +7,7 @@ import PostItem from "./PostItem";
 interface PostType {
     _id: string;
     message: string;
+    userLiked: number;
     likeCount: number;
     commentCount: number;
     updatedAt: string;
@@ -53,7 +54,6 @@ export default function PostContainer() {
                     },
                     body: JSON.stringify({
                         message: (e.target as HTMLFormElement).message.value,
-                        createdBy: myInfo._id,
                     }),
                 }
             );

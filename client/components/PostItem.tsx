@@ -7,6 +7,7 @@ import { useUserContext } from "./UserContext";
 interface ItemType {
     _id: string;
     message: string;
+    userLiked: number;
     likeCount: number;
     commentCount: number;
     updatedAt: string;
@@ -39,7 +40,98 @@ export default function PostItem({ post, setPost }: PostItemProps) {
     const commentRef = useRef<HTMLInputElement>(null);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
+    const [showComment, setShowComment] = useState(false);
     const { myInfo } = useUserContext();
+
+    const handleLike = async () => {
+        if (!user) {
+            console.log("You are not logged in");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/post/like`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${user?.token}`,
+                    },
+                    body: JSON.stringify({
+                        postId: post._id,
+                    }),
+                }
+            );
+
+            const json = await response.json();
+
+            if (!response.ok) {
+                console.log(json.error);
+            }
+
+            if (response.ok) {
+                setPost((prev) =>
+                    prev.map((item) => {
+                        if (item._id === post._id) {
+                            return {
+                                ...item,
+                                userLiked: 1,
+                                likeCount: item.likeCount + 1,
+                            };
+                        }
+                        return item;
+                    })
+                );
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) console.log(err.message);
+            console.log("Server is starting. Please wait about 20 seconds.");
+        }
+    };
+
+    const handleUnlike = async () => {
+        if (!user) {
+            console.log("You are not logged in");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/post/like/${post._id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${user?.token}`,
+                    },
+                }
+            );
+
+            const json = await response.json();
+
+            if (!response.ok) {
+                console.log(json.error);
+            }
+
+            if (response.ok) {
+                setPost((prev) =>
+                    prev.map((item) => {
+                        if (item._id === post._id) {
+                            return {
+                                ...item,
+                                userLiked: 0,
+                                likeCount: item.likeCount - 1,
+                            };
+                        }
+                        return item;
+                    })
+                );
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) console.log(err.message);
+            console.log("Server is starting. Please wait about 20 seconds.");
+        }
+    };
 
     const handleComment = async () => {
         if (!user) {
@@ -61,7 +153,6 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                         message: commentRef.current
                             ? commentRef.current.value
                             : post.message,
-                        createdBy: myInfo._id,
                     }),
                 }
             );
@@ -91,6 +182,7 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                                     },
                                     ...item.comments,
                                 ],
+                                commentCount: item.commentCount + 1,
                             };
                         }
                         return item;
@@ -234,8 +326,20 @@ export default function PostItem({ post, setPost }: PostItemProps) {
             </div>
             <hr />
             <div className={style.like_comment_buttons}>
-                <button>Like</button>
-                <button>Comment</button>
+                {post.userLiked === 0 ? (
+                    <button onClick={handleLike}>Like</button>
+                ) : (
+                    <button onClick={handleUnlike}>Unlike</button>
+                )}
+                {showComment ? (
+                    <button onClick={() => setShowComment((prev) => !prev)}>
+                        Hide Comment
+                    </button>
+                ) : (
+                    <button onClick={() => setShowComment((prev) => !prev)}>
+                        Comment
+                    </button>
+                )}
                 {myInfo._id === post.createdBy._id && (
                     <>
                         {showEdit ? (
@@ -259,53 +363,60 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                     </>
                 )}
             </div>
-            <hr />
-            {post.comments &&
-                post.comments
-                    .slice(0)
-                    .reverse()
-                    .map((comment) => (
-                        <div key={comment._id} className={style.comment}>
-                            <img
-                                className={style.pfp}
-                                src={comment.createdBy.profilePicture}
-                                alt="pfp"
-                            />
-                            <div className={style.comment_right}>
-                                <div>
-                                    <span className={style.name}>
-                                        {comment.createdBy.name}
-                                    </span>{" "}
-                                    <span className={style.date}>
-                                        {formatDistanceToNow(
-                                            new Date(comment.updatedAt),
-                                            {
-                                                addSuffix: true,
-                                            }
-                                        )}
-                                    </span>
+            {showComment && (
+                <>
+                    <hr />
+                    {post.comments &&
+                        post.comments
+                            .slice(0)
+                            .reverse()
+                            .map((comment) => (
+                                <div
+                                    key={comment._id}
+                                    className={style.comment}
+                                >
+                                    <img
+                                        className={style.pfp}
+                                        src={comment.createdBy.profilePicture}
+                                        alt="pfp"
+                                    />
+                                    <div className={style.comment_right}>
+                                        <div>
+                                            <span className={style.name}>
+                                                {comment.createdBy.name}
+                                            </span>{" "}
+                                            <span className={style.date}>
+                                                {formatDistanceToNow(
+                                                    new Date(comment.updatedAt),
+                                                    {
+                                                        addSuffix: true,
+                                                    }
+                                                )}
+                                            </span>
+                                        </div>
+                                        <div>{comment.message}</div>
+                                    </div>
                                 </div>
-                                <div>{comment.message}</div>
-                            </div>
-                        </div>
-                    ))}
-            <div className={style.post_comment}>
-                <img
-                    className={style.pfp}
-                    src={myInfo.profilePicture}
-                    alt="pfp"
-                />
-                <input
-                    type="text"
-                    name="message"
-                    minLength={1}
-                    maxLength={250}
-                    required
-                    ref={commentRef}
-                    placeholder="Write a comment..."
-                />
-                <button onClick={handleComment}>Post</button>
-            </div>
+                            ))}
+                    <div className={style.post_comment}>
+                        <img
+                            className={style.pfp}
+                            src={myInfo.profilePicture}
+                            alt="pfp"
+                        />
+                        <input
+                            type="text"
+                            name="message"
+                            minLength={1}
+                            maxLength={250}
+                            required
+                            ref={commentRef}
+                            placeholder="Write a comment..."
+                        />
+                        <button onClick={handleComment}>Post</button>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
