@@ -36,7 +36,7 @@ interface PostItemProps {
 
 export default function PostItem({ post, setPost }: PostItemProps) {
     const { user } = useAuthContext();
-    const updateRef = useRef<HTMLInputElement>(null);
+    const updateRef = useRef<HTMLTextAreaElement>(null);
     const commentRef = useRef<HTMLInputElement>(null);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
@@ -298,10 +298,9 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                 </div>
             </div>
             {showEdit ? (
-                <div>
-                    <input
+                <div className={style.edit_bar}>
+                    <textarea
                         defaultValue={post.message}
-                        type="text"
                         name="message"
                         placeholder="Edit message"
                         minLength={1}
@@ -352,7 +351,10 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                             </button>
                         )}
                         {showDelete ? (
-                            <button onClick={handleDelete}>
+                            <button
+                                className={style.delete_confirm}
+                                onClick={handleDelete}
+                            >
                                 Confirm Delete
                             </button>
                         ) : (
@@ -365,7 +367,7 @@ export default function PostItem({ post, setPost }: PostItemProps) {
             </div>
             {showComment && (
                 <>
-                    <hr />
+                    <hr className={style.comment_hr} />
                     {post.comments &&
                         post.comments
                             .slice(0)

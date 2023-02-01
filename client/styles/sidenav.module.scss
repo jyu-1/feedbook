@@ -3,7 +3,7 @@
 .nav {
     min-width: 250px;
     max-width: 400px;
-    overflow-y: auto;
+    overflow-y: overlay;
     background-color: color.$secondary-background;
     box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.5);
 
@@ -28,7 +28,7 @@
             border-radius: 10px;
 
             &:hover {
-                background-color: rgb(225, 225, 225);
+                background-color: color.$button-hover;
             }
         }
     }
