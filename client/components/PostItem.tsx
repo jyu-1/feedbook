@@ -336,7 +336,10 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                     </button>
                 )}
                 {showComment ? (
-                    <button onClick={() => setShowComment((prev) => !prev)}>
+                    <button
+                        className={style.comment_button}
+                        onClick={() => setShowComment((prev) => !prev)}
+                    >
                         Hide Comment
                     </button>
                 ) : (
@@ -347,7 +350,10 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                 {myInfo._id === post.createdBy._id && (
                     <>
                         {showEdit ? (
-                            <button onClick={() => setShowEdit(false)}>
+                            <button
+                                className={style.update_button}
+                                onClick={() => setShowEdit(false)}
+                            >
                                 Cancel Update
                             </button>
                         ) : (
