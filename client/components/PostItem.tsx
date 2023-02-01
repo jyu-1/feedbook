@@ -10,11 +10,15 @@ interface ItemType {
     likeCount: number;
     commentCount: number;
     updatedAt: string;
-    comments?: {
-        _id: number;
-        name: string;
+    comments: {
+        _id: string;
         message: string;
         updatedAt: string;
+        createdBy: {
+            _id: string;
+            name: string;
+            profilePicture: string;
+        };
     }[];
     uploadImage: string;
     createdBy: {
@@ -32,9 +36,72 @@ interface PostItemProps {
 export default function PostItem({ post, setPost }: PostItemProps) {
     const { user } = useAuthContext();
     const updateRef = useRef<HTMLInputElement>(null);
+    const commentRef = useRef<HTMLInputElement>(null);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const { myInfo } = useUserContext();
+
+    const handleComment = async () => {
+        if (!user) {
+            console.log("You are not logged in");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/comment`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${user?.token}`,
+                    },
+                    body: JSON.stringify({
+                        postId: post._id,
+                        message: commentRef.current
+                            ? commentRef.current.value
+                            : post.message,
+                        createdBy: myInfo._id,
+                    }),
+                }
+            );
+
+            const json = await response.json();
+
+            if (!response.ok) {
+                console.log(json.error);
+            }
+
+            if (response.ok) {
+                if (commentRef.current) commentRef.current.value = "";
+                setPost((prev) =>
+                    prev.map((item) => {
+                        if (item._id === post._id) {
+                            return {
+                                ...item,
+                                comments: [
+                                    {
+                                        ...json,
+                                        createdBy: {
+                                            _id: myInfo._id,
+                                            name: myInfo.name,
+                                            profilePicture:
+                                                myInfo.profilePicture,
+                                        },
+                                    },
+                                    ...item.comments,
+                                ],
+                            };
+                        }
+                        return item;
+                    })
+                );
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) console.log(err.message);
+            console.log("Server is starting. Please wait about 20 seconds.");
+        }
+    };
 
     const handleUpdate = async () => {
         if (!user) {
@@ -194,29 +261,50 @@ export default function PostItem({ post, setPost }: PostItemProps) {
             </div>
             <hr />
             {post.comments &&
-                post.comments.map((comment) => (
-                    <div key={comment._id} className={style.comment}>
-                        <div>
-                            <span className={style.name}>{comment.name}</span>{" "}
-                            <span className={style.date}>
-                                {formatDistanceToNow(
-                                    new Date(comment.updatedAt),
-                                    {
-                                        addSuffix: true,
-                                    }
-                                )}
-                            </span>
+                post.comments
+                    .slice(0)
+                    .reverse()
+                    .map((comment) => (
+                        <div key={comment._id} className={style.comment}>
+                            <img
+                                className={style.pfp}
+                                src={comment.createdBy.profilePicture}
+                                alt="pfp"
+                            />
+                            <div className={style.comment_right}>
+                                <div>
+                                    <span className={style.name}>
+                                        {comment.createdBy.name}
+                                    </span>{" "}
+                                    <span className={style.date}>
+                                        {formatDistanceToNow(
+                                            new Date(comment.updatedAt),
+                                            {
+                                                addSuffix: true,
+                                            }
+                                        )}
+                                    </span>
+                                </div>
+                                <div>{comment.message}</div>
+                            </div>
                         </div>
-                        <div>{comment.message}</div>
-                    </div>
-                ))}
+                    ))}
             <div className={style.post_comment}>
                 <img
                     className={style.pfp}
                     src={myInfo.profilePicture}
                     alt="pfp"
                 />
-                <input placeholder="Write a comment..." />
+                <input
+                    type="text"
+                    name="message"
+                    minLength={1}
+                    maxLength={250}
+                    required
+                    ref={commentRef}
+                    placeholder="Write a comment..."
+                />
+                <button onClick={handleComment}>Post</button>
             </div>
         </div>
     );

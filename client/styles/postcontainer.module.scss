@@ -147,9 +147,16 @@
 
     .comment {
         margin-bottom: 20px;
-        background-color: color.$primary-background;
-        padding: 10px;
-        border-radius: 10px;
+        display: flex;
+        gap: 10px;
+
+        .comment_right {
+            flex: 1;
+            background-color: color.$primary-background;
+            border-radius: 10px;
+            padding: 10px;
+            align-self: flex-start;
+        }
 
         .name {
             font-weight: bold;
@@ -157,6 +164,12 @@
 
         .date {
             font-size: 0.75rem;
+        }
+
+        .pfp {
+            height: 50px;
+            width: 50px;
+            margin: 10px;
         }
     }
 }

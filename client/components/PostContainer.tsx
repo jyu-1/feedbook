@@ -10,11 +10,15 @@ interface PostType {
     likeCount: number;
     commentCount: number;
     updatedAt: string;
-    comments?: {
-        _id: number;
-        name: string;
+    comments: {
+        _id: string;
         message: string;
         updatedAt: string;
+        createdBy: {
+            _id: string;
+            name: string;
+            profilePicture: string;
+        };
     }[];
     uploadImage: string;
     createdBy: {
