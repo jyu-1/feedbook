@@ -1,4 +1,5 @@
 @use "color";
+@use "modules";
 
 .friend_list {
     min-width: 250px;
@@ -33,5 +34,9 @@
             width: 50px;
             border-radius: 50%;
         }
+    }
+
+    @include modules.mobile {
+        display: none;
     }
 }
