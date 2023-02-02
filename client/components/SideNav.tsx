@@ -9,6 +9,7 @@ import {
     FaInstagram,
     FaNodeJs,
     FaReact,
+    FaGithub,
 } from "react-icons/fa";
 import { SiExpress, SiMongodb } from "react-icons/si";
 
@@ -73,6 +74,11 @@ export default function SideNav() {
                 <a href="https://www.mongodb.com/docs/">
                     <SiMongodb size={25} />
                     MongoDB Docs
+                </a>
+            </div>
+            <div className={style.nav_item}>
+                <a href="https://github.com/jyu-1">
+                    <FaGithub size={25} />© 2023 Nateyu
                 </a>
             </div>
         </div>
