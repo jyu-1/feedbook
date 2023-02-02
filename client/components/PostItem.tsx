@@ -3,6 +3,14 @@ import { formatDistanceToNow } from "date-fns";
 import { useRef, useState } from "react";
 import { useAuthContext } from "./AuthContext";
 import { useUserContext } from "./UserContext";
+import {
+    FcLike,
+    FcLikePlaceholder,
+    FcSurvey,
+    FcFullTrash,
+    FcEmptyTrash,
+} from "react-icons/fc";
+import { FaCommentAlt, FaRegCommentAlt } from "react-icons/fa";
 
 interface ItemType {
     _id: string;
@@ -308,7 +316,10 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                         required
                         ref={updateRef}
                     />
-                    <button onClick={handleUpdate}>Update</button>
+                    <button onClick={handleUpdate}>
+                        <FcSurvey size={20} />
+                        Done
+                    </button>
                 </div>
             ) : (
                 <div className={style.message}>{post.message}</div>
@@ -320,19 +331,30 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                 </>
             )}
             <div className={style.stats}>
-                <div>Likes: {post.likeCount}</div>
-                <div>{post.commentCount} comments</div>
+                <div>
+                    <FcLike /> {post.likeCount}
+                </div>
+                <div>
+                    <FaRegCommentAlt /> {post.commentCount}
+                </div>
             </div>
             <hr />
             <div className={style.like_comment_buttons}>
                 {post.userLiked === 0 ? (
-                    <button onClick={handleLike}>Like</button>
+                    <button
+                        className={style.unlike_button}
+                        onClick={handleLike}
+                    >
+                        <FcLikePlaceholder size={25} />
+                        Like
+                    </button>
                 ) : (
                     <button
                         className={style.liked_button}
                         onClick={handleUnlike}
                     >
-                        Unlike
+                        <FcLike size={25} />
+                        Like
                     </button>
                 )}
                 {showComment ? (
@@ -340,10 +362,12 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                         className={style.comment_button}
                         onClick={() => setShowComment((prev) => !prev)}
                     >
-                        Hide Comment
+                        <FaCommentAlt size={20} />
+                        Comment
                     </button>
                 ) : (
                     <button onClick={() => setShowComment((prev) => !prev)}>
+                        <FaRegCommentAlt size={20} />
                         Comment
                     </button>
                 )}
@@ -354,11 +378,13 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                                 className={style.update_button}
                                 onClick={() => setShowEdit(false)}
                             >
-                                Cancel Update
+                                <FcSurvey size={25} />
+                                Cancel
                             </button>
                         ) : (
                             <button onClick={() => setShowEdit(true)}>
-                                Update Post
+                                <FcSurvey size={25} />
+                                Edit
                             </button>
                         )}
                         {showDelete ? (
@@ -366,11 +392,13 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                                 className={style.delete_confirm}
                                 onClick={handleDelete}
                             >
-                                Confirm Delete
+                                <FcFullTrash size={25} />
+                                Confirm
                             </button>
                         ) : (
                             <button onClick={() => setShowDelete(true)}>
-                                Delete Post
+                                <FcEmptyTrash size={25} />
+                                Delete
                             </button>
                         )}
                     </>
@@ -426,7 +454,9 @@ export default function PostItem({ post, setPost }: PostItemProps) {
                             ref={commentRef}
                             placeholder="Write a comment..."
                         />
-                        <button onClick={handleComment}>Post</button>
+                        <button onClick={handleComment}>
+                            <FcSurvey size={30} />
+                        </button>
                     </div>
                 </>
             )}

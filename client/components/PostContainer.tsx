@@ -3,6 +3,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useAuthContext } from "./AuthContext";
 import { useUserContext } from "./UserContext";
 import PostItem from "./PostItem";
+import { FcPicture, FcSurvey } from "react-icons/fc";
 
 interface PostType {
     _id: string;
@@ -136,9 +137,11 @@ export default function PostContainer() {
                 <hr />
                 <div className={style.post_buttons}>
                     <button type="button" disabled={isLoading}>
+                        <FcPicture size={30} />
                         Attach a Photo
                     </button>
                     <button type="submit" disabled={isLoading}>
+                        <FcSurvey size={30} />
                         Post
                     </button>
                 </div>

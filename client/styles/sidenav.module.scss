@@ -22,12 +22,15 @@
         margin: 25px;
 
         a {
-            display: block;
             text-decoration: none;
             color: black;
             padding: 20px;
             border-radius: 10px;
             font-weight: bold;
+
+            display: flex;
+            align-items: center;
+            gap: 5px;
 
             &:hover {
                 background-color: color.$button-hover;

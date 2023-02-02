@@ -3,6 +3,8 @@ import style from "@/styles/header.module.scss";
 import { useLogout } from "./AuthContext";
 import { useUserContext } from "./UserContext";
 import { useState } from "react";
+import { TbLogout } from "react-icons/tb";
+import { FcEditImage, FcSettings } from "react-icons/fc";
 
 export default function Header() {
     const { logout } = useLogout();
@@ -26,7 +28,11 @@ export default function Header() {
                 >
                     <img
                         className={style.pfp}
-                        src={myInfo.profilePicture}
+                        src={
+                            dropdown
+                                ? "https://img.icons8.com/pastel-glyph/128/null/cancel--v1.png"
+                                : myInfo.profilePicture
+                        }
                         alt="pfp"
                     />
                 </div>
@@ -45,9 +51,16 @@ export default function Header() {
                         />
                         <div>{myInfo.name}</div>
                     </div>
-                    <div className={style.nav_item}>Change Name</div>
-                    <div className={style.nav_item}>Change Picture</div>
+                    <div className={style.nav_item}>
+                        <FcSettings size={30} />
+                        Change Name
+                    </div>
+                    <div className={style.nav_item}>
+                        <FcEditImage size={30} />
+                        Change Picture
+                    </div>
                     <div className={style.nav_item} onClick={handleLogout}>
+                        <TbLogout size={30} />
                         Logout
                     </div>
                 </div>
