@@ -85,6 +85,7 @@ export const useSignUp = () => {
         setError(null);
 
         try {
+            setError("Server is starting. Please wait about 20 seconds.");
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/signup`,
                 {
@@ -137,6 +138,7 @@ export const useLogin = () => {
         setError(null);
 
         try {
+            setError("Server is starting. Please wait about 20 seconds.");
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/login`,
                 {
@@ -170,6 +172,7 @@ export const useLogin = () => {
         setError(null);
 
         try {
+            setError("Server is starting. Please wait about 20 seconds.");
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/user/guest`,
                 {
